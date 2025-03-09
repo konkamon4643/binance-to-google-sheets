@@ -3,7 +3,7 @@ const axios = require('axios');
 
 async function updateSheet() {
     const auth = new google.auth.GoogleAuth({
-        keyFile: 'path-to-your-service-account-json-file', // เปลี่ยนเป็นพาธของไฟล์ JSON
+        keyFile: './binance-api-key.json', // เปลี่ยนเป็นพาธของไฟล์ JSON
         scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     });
 
