@@ -2,7 +2,7 @@ name: Update Google Sheets with Binance Data
 
 on:
   schedule:
-    - cron: '0 * * * *'  # ทุกชั่วโมง
+    - cron: '0 * * * *'  # ทุกชั่วโมงที่นาทีที่ 0
   workflow_dispatch:  # สามารถรันด้วยมือได้
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install
+          npm install  # ติดตั้ง dependencies ที่กำหนดใน package.json
 
       - name: Run the script
         run: |
