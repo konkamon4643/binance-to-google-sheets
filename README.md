@@ -1,1 +1,0 @@
-# binance-to-google-sheets
