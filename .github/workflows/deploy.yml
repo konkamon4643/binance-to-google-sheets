@@ -1,0 +1,29 @@
+name: Update Google Sheets with Binance Data
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # ทุกชั่วโมง
+  workflow_dispatch:  # สามารถรันด้วยมือได้
+
+jobs:
+  update-google-sheet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Run the script
+        run: |
+          node index.js
+        env:
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+          GOOGLE_API_CREDENTIALS: ${{ secrets.GOOGLE_API_CREDENTIALS }}
