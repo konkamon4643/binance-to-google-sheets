@@ -1,43 +1,36 @@
 const { google } = require('googleapis');
 const axios = require('axios');
 
-// ฟังก์ชันดึงข้อมูลจาก Binance API
-async function getBinanceData() {
-    const response = await axios.get('https://api.binance.com/api/v3/ticker/bookTicker');
-    return response.data;
-}
-
-// ฟังก์ชันเพื่อบันทึกข้อมูลลง Google Sheets
-async function updateGoogleSheet() {
-    const credentials = JSON.parse(process.env.GOOGLE_API_CREDENTIALS); // ใช้ข้อมูลจาก GitHub Secrets
-    
-    // สร้าง Google Sheets API client
+async function updateSheet() {
     const auth = new google.auth.GoogleAuth({
-        credentials,
+        keyFile: 'path-to-your-service-account-json-file',  // เปลี่ยนเป็นพาธที่คุณเก็บไฟล์ JSON ของ Service Account
         scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     });
 
     const sheets = google.sheets({ version: 'v4', auth });
-    const spreadsheetId = process.env.GOOGLE_SHEET_ID;  // ใช้ Google Sheets ID จาก GitHub Secrets
-    const range = 'Sheet1!A1';  // ระบุตำแหน่งที่ต้องการบันทึกข้อมูล
+    const spreadsheetId = '1_g0UxUXGIXXdEeFAQjrD43aP2bOTSkQ_zx7TMAcTY4w'; // ID ของ Spreadsheet
+    const range = 'Sheet1!A1'; // ชื่อชีต + เซลล์ที่ต้องการเริ่มอัปเดตข้อมูล
 
-    const binanceData = await getBinanceData();
+    // ตัวอย่างการดึงข้อมูลจาก Binance API (หรือ API อื่นๆ ที่คุณต้องการ)
+    const response = await axios.get('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
+    const data = response.data;
 
-    // จัดรูปแบบข้อมูลให้เหมาะสม
-    const values = binanceData.map(item => [item.symbol, item.bidPrice, item.askPrice]);
+    // เตรียมข้อมูลที่จะอัปเดตใน Google Sheets
+    const values = [
+        [data.symbol, data.lastPrice, data.priceChangePercent]
+    ];
 
-    const resource = {
-        values,
-    };
-
-    // บันทึกข้อมูลลง Google Sheets
+    // อัปเดตข้อมูลใน Google Sheets
     await sheets.spreadsheets.values.update({
         spreadsheetId,
         range,
         valueInputOption: 'RAW',
-        resource,
+        requestBody: {
+            values,
+        },
     });
+
+    console.log('Data updated successfully!');
 }
 
-// เรียกใช้งานฟังก์ชัน
-updateGoogleSheet().catch(console.error);
+updateSheet().catch(console.error);
