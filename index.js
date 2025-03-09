@@ -9,7 +9,7 @@ async function updateSheet() {
 
     const sheets = google.sheets({ version: 'v4', auth });
     const spreadsheetId = '1_g0UxUXGIXXdEeFAQjrD43aP2bOTSkQ_zx7TMAcTY4w'; // ID ของ Spreadsheet
-    const range = 'Sheet1!A1'; // ชื่อชีต + เซลล์ที่ต้องการเริ่มอัปเดตข้อมูล
+    const range = 'volum!A1'; // ชื่อชีต + เซลล์ที่ต้องการเริ่มอัปเดตข้อมูล
 
     // ตัวอย่างการดึงข้อมูลจาก Binance API (หรือ API อื่นๆ ที่คุณต้องการ)
     const response = await axios.get('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
